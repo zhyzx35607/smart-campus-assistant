@@ -148,10 +148,4 @@ smart-campus-assistant/
 
 MIT License
 
-## 作者
 
-浙大城市学院 · 计算机与计算科学学院
-
----
-
-> 基于 AI 多模态大模型及 GraphRAG 技术驱动 🚀
