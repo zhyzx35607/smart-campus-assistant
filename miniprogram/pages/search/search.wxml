@@ -1,0 +1,52 @@
+<view class="page">
+  <!-- 搜索框 -->
+  <view class="search-section">
+    <view class="search-bar">
+      <text class="search-icon">🔍</text>
+      <input class="search-input" placeholder="输入关键词，如：选课、热水、食堂..." value="{{keyword}}" bindinput="onKeywordInput" bindconfirm="onSearch" confirm-type="search" focus="{{autoFocus}}" />
+      <view class="search-btn" bindtap="onSearch">
+        <text>搜索</text>
+      </view>
+    </view>
+    <view class="hot-keywords">
+      <text class="keyword" wx:for="{{hotKeywords}}" wx:key="*this" data-keyword="{{item}}" bindtap="onKeywordTap">{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 搜索结果 -->
+  <view class="results-section" wx:if="{{hasSearched}}">
+    <view class="results-header">
+      <text class="results-title">搜索结果</text>
+      <text class="results-count">共找到 {{searchResults.length}} 条相关讨论</text>
+    </view>
+    <view class="result-list">
+      <view class="result-card" wx:for="{{searchResults}}" wx:key="id" bindtap="goToPostDetail" data-id="{{item.id}}">
+        <view class="result-header">
+          <image class="result-avatar" src="{{item.avatar}}" mode="aspectFill" wx:if="{{item.avatar}}" />
+          <view class="result-author-info">
+            <text class="result-author">{{item.author}}</text>
+            <text class="result-time">{{item.time}}</text>
+          </view>
+          <text class="tag {{item.tagClass}}">{{item.tag}}</text>
+        </view>
+        <text class="result-title">{{item.title}}</text>
+        <text class="result-content ellipsis-3" wx:if="{{item.content}}">{{item.content}}</text>
+        <view class="result-stats">
+          <text class="stat">💬 {{item.comments}}</text>
+          <text class="stat">❤️ {{item.likes}}</text>
+          <text class="stat" wx:if="{{item.views}}">👁️ {{item.views}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 无结果 -->
+  <view class="no-results" wx:if="{{hasSearched && searchResults.length === 0}}">
+    <text class="no-icon">🔍</text>
+    <text class="no-title">未找到相关讨论</text>
+    <text class="no-desc">尝试使用其他关键词，或直接发起一个新讨论。</text>
+    <view class="no-btn" bindtap="goToCreatePost">
+      <text>发起讨论</text>
+    </view>
+  </view>
+</view>

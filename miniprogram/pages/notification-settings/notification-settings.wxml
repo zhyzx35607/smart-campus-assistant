@@ -1,0 +1,81 @@
+<view class="page">
+  <!-- 通知类型设置 -->
+  <view class="card">
+    <view class="card-title">🔔 通知类型设置</view>
+
+    <view class="switch-item">
+      <view class="switch-left">
+        <view class="switch-icon blue">🔔</view>
+        <view class="switch-info">
+          <text class="switch-name">系统通知</text>
+          <text class="switch-desc">校园公告、课程调整等重要通知</text>
+        </view>
+      </view>
+      <switch checked="{{notifySystem}}" bindchange="onNotifySystemChange" color="#2563eb" />
+    </view>
+
+    <view class="switch-item">
+      <view class="switch-left">
+        <view class="switch-icon green">💬</view>
+        <view class="switch-info">
+          <text class="switch-name">新回复提醒</text>
+          <text class="switch-desc">您的帖子收到新的回复或评论</text>
+        </view>
+      </view>
+      <switch checked="{{notifyReplies}}" bindchange="onNotifyRepliesChange" color="#16a34a" />
+    </view>
+
+    <view class="switch-item">
+      <view class="switch-left">
+        <view class="switch-icon purple">👥</view>
+        <view class="switch-info">
+          <text class="switch-name">社区动态</text>
+          <text class="switch-desc">热门讨论、新话题推荐</text>
+        </view>
+      </view>
+      <switch checked="{{notifyCommunity}}" bindchange="onNotifyCommunityChange" color="#9333ea" />
+    </view>
+
+    <view class="switch-item">
+      <view class="switch-left">
+        <view class="switch-icon orange">📅</view>
+        <view class="switch-info">
+          <text class="switch-name">活动提醒</text>
+          <text class="switch-desc">校园活动、讲座、竞赛通知</text>
+        </view>
+      </view>
+      <switch checked="{{notifyEvents}}" bindchange="onNotifyEventsChange" color="#ea580c" />
+    </view>
+
+    <view class="switch-item">
+      <view class="switch-left">
+        <view class="switch-icon pink">✉️</view>
+        <view class="switch-info">
+          <text class="switch-name">私信通知</text>
+          <text class="switch-desc">收到新的私信或好友请求</text>
+        </view>
+      </view>
+      <switch checked="{{notifyMessages}}" bindchange="onNotifyMessagesChange" color="#ec4899" />
+    </view>
+
+    <view class="card-footer">
+      <text class="footer-text">通知将通过站内信和邮箱发送（如已绑定邮箱）</text>
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-row">
+    <view class="btn-cancel" bindtap="onCancel">取消</view>
+    <view class="btn-reset" bindtap="onReset">重置</view>
+    <view class="btn-primary" bindtap="onSave">✅ 保存设置</view>
+  </view>
+
+  <!-- 提示 -->
+  <view class="notice-card">
+    <text class="notice-title">💡 温馨提示：</text>
+    <text class="notice-item">· 通知设置更改将立即生效</text>
+    <text class="notice-item">· 关闭某类通知后，您将不再收到该类型提醒</text>
+    <text class="notice-item">· 系统通知和紧急公告不受此设置影响</text>
+    <text class="notice-item">· 您可以随时返回此页面调整通知偏好</text>
+  </view>
+</view>

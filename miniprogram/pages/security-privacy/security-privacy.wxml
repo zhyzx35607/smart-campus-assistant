@@ -1,0 +1,139 @@
+<view class="page">
+  <!-- 修改密码 -->
+  <view class="card">
+    <view class="card-title">🔒 修改密码</view>
+    <view class="form-list">
+      <view class="form-item">
+        <text class="form-label">当前密码</text>
+        <input class="input-field" password="{{true}}" placeholder="请输入当前密码" value="{{currentPwd}}" bindinput="onCurrentPwdInput" />
+      </view>
+      <view class="form-item">
+        <text class="form-label">新密码</text>
+        <input class="input-field" password="{{true}}" placeholder="请输入新密码（至少8位）" value="{{newPwd}}" bindinput="onNewPwdInput" />
+      </view>
+      <view class="form-item">
+        <text class="form-label">确认新密码</text>
+        <input class="input-field" password="{{true}}" placeholder="请再次输入新密码" value="{{confirmPwd}}" bindinput="onConfirmPwdInput" />
+      </view>
+    </view>
+    <text class="card-hint">请确保密码包含字母、数字和特殊字符，以提高安全性。</text>
+  </view>
+
+  <!-- 隐私设置 -->
+  <view class="card">
+    <view class="card-title">🛡️ 隐私设置</view>
+
+    <view class="switch-item">
+      <view class="switch-left">
+        <view class="switch-icon purple">👤</view>
+        <view class="switch-info">
+          <text class="switch-name">个人资料可见性</text>
+          <text class="switch-desc">谁可以查看您的个人资料和问答历史</text>
+        </view>
+      </view>
+      <picker mode="selector" range="{{visibilityOptions}}" value="{{visibilityIndex}}" bindchange="onVisibilityChange">
+        <view class="picker-btn">{{visibilityOptions[visibilityIndex]}} ▾</view>
+      </picker>
+    </view>
+
+    <view class="switch-item">
+      <view class="switch-left">
+        <view class="switch-icon amber">📋</view>
+        <view class="switch-info">
+          <text class="switch-name">活动记录可见性</text>
+          <text class="switch-desc">是否显示您的提问、点赞和社区活动</text>
+        </view>
+      </view>
+      <switch checked="{{showActivity}}" bindchange="onShowActivityChange" color="#ea580c" />
+    </view>
+
+    <view class="switch-item">
+      <view class="switch-left">
+        <view class="switch-icon green">👁️</view>
+        <view class="switch-info">
+          <text class="switch-name">隐藏在线状态</text>
+          <text class="switch-desc">其他用户将无法看到您是否在线</text>
+        </view>
+      </view>
+      <switch checked="{{hideOnline}}" bindchange="onHideOnlineChange" color="#16a34a" />
+    </view>
+  </view>
+
+  <!-- 登录安全 -->
+  <view class="card">
+    <view class="card-title">🔐 登录安全</view>
+
+    <view class="switch-item">
+      <view class="switch-left">
+        <view class="switch-icon green">🔑</view>
+        <view class="switch-info">
+          <text class="switch-name">双重验证 (2FA)</text>
+          <text class="switch-desc">启用后，登录时需要输入手机验证码</text>
+        </view>
+      </view>
+      <switch checked="{{enable2fa}}" bindchange="onEnable2faChange" color="#16a34a" />
+    </view>
+
+    <view class="switch-item">
+      <view class="switch-left">
+        <view class="switch-icon blue">📱</view>
+        <view class="switch-info">
+          <text class="switch-name">登录设备管理</text>
+          <text class="switch-desc">查看并管理已登录的设备</text>
+        </view>
+      </view>
+      <view class="action-btn" bindtap="onViewDevices">
+        <text>查看设备</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 数据管理 -->
+  <view class="card">
+    <view class="card-title">💾 数据管理</view>
+
+    <view class="switch-item">
+      <view class="switch-left">
+        <view class="switch-icon gray">📥</view>
+        <view class="switch-info">
+          <text class="switch-name">数据导出</text>
+          <text class="switch-desc">请求下载您的个人数据副本（JSON格式）</text>
+        </view>
+      </view>
+      <view class="action-btn" bindtap="onDataExport">
+        <text>请求导出</text>
+      </view>
+    </view>
+
+    <view class="switch-item">
+      <view class="switch-left">
+        <view class="switch-icon red">🗑️</view>
+        <view class="switch-info">
+          <text class="switch-name">账户注销</text>
+          <text class="switch-desc">永久删除您的账户及相关数据</text>
+        </view>
+      </view>
+      <view class="action-btn danger" bindtap="onDeleteAccount">
+        <text>注销账户</text>
+      </view>
+    </view>
+
+    <text class="card-hint">账户注销操作不可逆，请谨慎操作。数据导出请求将在24小时内通过邮件发送。</text>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-row">
+    <view class="btn-cancel" bindtap="onCancel">取消</view>
+    <view class="btn-reset" bindtap="onReset">重置</view>
+    <view class="btn-primary" bindtap="onSave">✅ 保存设置</view>
+  </view>
+
+  <!-- 安全提示 -->
+  <view class="notice-card">
+    <text class="notice-title">🔒 安全提示：</text>
+    <text class="notice-item">· 请定期更新密码，并确保密码足够复杂</text>
+    <text class="notice-item">· 启用双重验证可以显著提高账户安全性</text>
+    <text class="notice-item">· 隐私设置更改后，可能需要一些时间才能完全生效</text>
+    <text class="notice-item">· 如果您发现任何异常活动，请立即联系管理员</text>
+  </view>
+</view>

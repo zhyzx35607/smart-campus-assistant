@@ -1,0 +1,103 @@
+<view class="page">
+  <!-- 搜索栏 -->
+  <view class="search-header">
+    <view class="search-box" bindtap="goToSearch">
+      <text class="search-icon">🔍</text>
+      <text class="search-text">搜索社区...</text>
+    </view>
+    <view class="post-btn" bindtap="goToCreatePost">
+      <text class="post-btn-icon">✏️</text>
+      <text class="post-btn-text">发帖</text>
+    </view>
+  </view>
+
+  <!-- 热度榜 -->
+  <view class="hot-section">
+    <view class="hot-header">
+      <text class="hot-icon">🔥</text>
+      <text class="hot-title">校园热度榜单</text>
+    </view>
+    <scroll-view class="hot-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+      <view class="hot-tags-row">
+        <view class="hot-tag-item" wx:for="{{hotRanking}}" wx:key="id" bindtap="onHotTopic" data-keyword="{{item.title}}">
+          <text class="hot-rank-badge rank-{{index < 3 ? (index+1) : 'default'}}">{{index+1}}</text>
+          <text class="hot-tag-text">{{item.title}}</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- AI知识众筹 -->
+  <view class="ai-crowd-card">
+    <view class="ai-crowd-content">
+      <text class="ai-crowd-title">🤖 AI 知识众筹</text>
+      <text class="ai-crowd-desc">AI 无法回答的问题？参与社区共建，通过您的回答帮助 AI 纠偏。</text>
+      <view class="ai-crowd-btn" bindtap="onCrowdParticipate">
+        <text>我要参与纠偏</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 过滤标签 -->
+  <view class="filter-bar">
+    <scroll-view class="filter-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+      <view class="filter-tabs">
+        <text class="filter-tab {{activeTab === 'all' ? 'active' : ''}}" data-tab="all" bindtap="onTabChange">全部讨论</text>
+        <text class="filter-tab {{activeTab === 'hot' ? 'active' : ''}}" data-tab="hot" bindtap="onTabChange">热点吐槽</text>
+        <text class="filter-tab {{activeTab === 'share' ? 'active' : ''}}" data-tab="share" bindtap="onTabChange">经验分享</text>
+        <text class="filter-tab {{activeTab === 'official' ? 'active' : ''}}" data-tab="official" bindtap="onTabChange">校方回应</text>
+      </view>
+    </scroll-view>
+    <view class="sort-btns">
+      <text class="sort-btn {{sortBy === 'latest' ? 'active' : ''}}" data-sort="latest" bindtap="onSortChange">最新</text>
+      <text class="sort-btn {{sortBy === 'hot' ? 'active' : ''}}" data-sort="hot" bindtap="onSortChange">最热</text>
+    </view>
+  </view>
+
+  <!-- 帖子列表 -->
+  <view class="post-list">
+    <view class="post-card" wx:for="{{posts}}" wx:key="id" bindtap="goToPostDetail" data-id="{{item.id}}">
+      <view class="post-header">
+        <image class="post-avatar" src="{{item.avatar}}" mode="aspectFill" />
+        <view class="post-author-info">
+          <text class="post-author">{{item.author}}</text>
+          <text class="post-author-tag" wx:if="{{item.authorTag}}">{{item.authorTag}}</text>
+          <text class="post-time">{{item.time}}</text>
+        </view>
+        <text class="tag {{item.tagClass}}">{{item.tag}}</text>
+      </view>
+      <text class="post-title">{{item.title}}</text>
+      <text class="post-content ellipsis-3">{{item.content}}</text>
+      <view class="post-images" wx:if="{{item.images && item.images.length > 0}}">
+        <image class="post-img" wx:for="{{item.images}}" wx:for-item="img" wx:key="*this" src="{{img}}" mode="aspectFill" />
+      </view>
+      <!-- 官方回应 -->
+      <view class="official-response" wx:if="{{item.officialResponse}}">
+        <view class="response-header">
+          <text class="response-icon">🛡️</text>
+          <text class="response-author">{{item.officialResponse.author}}</text>
+        </view>
+        <text class="response-text">{{item.officialResponse.content}}</text>
+      </view>
+      <view class="post-stats">
+        <view class="stat-item">
+          <text>💬</text>
+          <text class="stat-num">{{item.comments}}</text>
+        </view>
+        <view class="stat-item">
+          <text>❤️</text>
+          <text class="stat-num">{{item.likes}}</text>
+        </view>
+        <view class="stat-item" wx:if="{{item.views}}">
+          <text>👁️</text>
+          <text class="stat-num">{{item.views}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载更多 -->
+  <view class="load-more" bindtap="loadMore">
+    <text class="load-more-text">加载更多精彩讨论...</text>
+  </view>
+</view>

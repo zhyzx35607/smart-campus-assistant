@@ -1,0 +1,48 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/chat/chat",
+    "pages/community/community",
+    "pages/profile/profile",
+    "pages/login/login",
+    "pages/create-post/create-post",
+    "pages/post-detail/post-detail",
+    "pages/search/search",
+    "pages/edit-profile/edit-profile",
+    "pages/notification-settings/notification-settings",
+    "pages/security-privacy/security-privacy"
+  ],
+  "window": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "智校通",
+    "navigationBarBackgroundColor": "#2563eb",
+    "backgroundColor": "#f8fafc"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#94a3b8",
+    "selectedColor": "#2563eb",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/chat/chat",
+        "text": "AI助手"
+      },
+      {
+        "pagePath": "pages/community/community",
+        "text": "社区"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的"
+      }
+    ]
+  },
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents"
+}

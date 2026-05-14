@@ -1,0 +1,101 @@
+<view class="page">
+  <!-- 表单区域 -->
+  <view class="form-section">
+    <!-- 标题 -->
+    <view class="form-group">
+      <text class="form-label">帖子标题 <text class="required">*</text></text>
+      <input class="input-field" placeholder="请输入帖子标题" maxlength="100" value="{{title}}" bindinput="onTitleInput" />
+      <text class="char-count">{{titleLength}}/100</text>
+    </view>
+
+    <!-- 内容 -->
+    <view class="form-group">
+      <text class="form-label">详细内容 <text class="required">*</text></text>
+      <textarea class="textarea-field" placeholder="请详细描述你的问题、经验或观点" maxlength="5000" value="{{content}}" bindinput="onContentInput" auto-height style="min-height: 300rpx;" />
+      <view class="textarea-footer">
+        <text class="hint-text">尽可能详细描述，方便他人理解和回复</text>
+        <text class="char-count">{{contentLength}}/5000</text>
+      </view>
+    </view>
+
+    <!-- 标签分类 -->
+    <view class="form-group">
+      <text class="form-label">选择标签（可选，最多3个）</text>
+      <view class="tag-list">
+        <view class="tag-option {{item.selected ? 'selected' : ''}} tag-{{item.key}}" 
+              wx:for="{{tags}}" wx:key="id" 
+              data-index="{{index}}" bindtap="onTagToggle">
+          <text>#{{item.name}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 附加选项 -->
+    <view class="form-group">
+      <text class="form-label">附加选项</text>
+      <view class="options-list">
+        <view class="option-item">
+          <text class="option-text">匿名发布</text>
+          <switch checked="{{anonymous}}" bindchange="onAnonymousChange" color="#2563eb" size="mini" />
+        </view>
+        <view class="option-item">
+          <text class="option-text">允许评论</text>
+          <switch checked="{{allowComments}}" bindchange="onAllowCommentsChange" color="#2563eb" size="mini" />
+        </view>
+        <view class="option-item">
+          <text class="option-text">订阅回复通知</text>
+          <switch checked="{{subscribe}}" bindchange="onSubscribeChange" color="#2563eb" size="mini" />
+        </view>
+      </view>
+    </view>
+
+    <!-- 附件上传 -->
+    <view class="form-group">
+      <text class="form-label">附件上传（可选）</text>
+      <view class="upload-area" bindtap="onUpload">
+        <text class="upload-icon">☁️</text>
+        <text class="upload-text">点击上传文件</text>
+        <text class="upload-hint">支持图片、PDF、Word，单文件不超过10MB</text>
+      </view>
+      <view class="file-list" wx:if="{{files.length > 0}}">
+        <view class="file-item" wx:for="{{files}}" wx:key="name">
+          <text class="file-icon">📄</text>
+          <view class="file-info">
+            <text class="file-name">{{item.name}}</text>
+            <text class="file-size">{{item.size}}</text>
+          </view>
+          <text class="file-remove" data-index="{{index}}" bindtap="onRemoveFile">✕</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-bar">
+    <view class="action-left">
+      <view class="btn-draft" bindtap="saveDraft">
+        <text>💾 保存草稿</text>
+      </view>
+      <view class="btn-preview" bindtap="previewPost">
+        <text>👁️ 预览帖子</text>
+      </view>
+    </view>
+    <view class="action-right">
+      <view class="btn-cancel" bindtap="onCancel">
+        <text>取消</text>
+      </view>
+      <view class="btn-submit" bindtap="onSubmit">
+        <text>🚀 发布讨论</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 发布须知 -->
+  <view class="notice-card">
+    <text class="notice-title">📋 发布须知：</text>
+    <text class="notice-item">· 请遵守社区规范，文明发言</text>
+    <text class="notice-item">· 优质帖子有机会被推荐至首页</text>
+    <text class="notice-item">· 校方可能会对帖子进行回应</text>
+    <text class="notice-item">· 可在个人中心管理已发布内容</text>
+  </view>
+</view>

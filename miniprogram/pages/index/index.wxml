@@ -1,0 +1,118 @@
+<view class="page">
+  <!-- Hero 搜索区 -->
+  <view class="hero-section">
+    <view class="hero-content">
+      <text class="greeting">您好，王同学！</text>
+      <text class="greeting-sub">有什么可以帮您？</text>
+      <text class="date-info">{{dateInfo}}</text>
+      <view class="search-bar" bindtap="goToSearch">
+        <text class="search-icon">🔍</text>
+        <text class="search-placeholder">试试搜索：如何申请大学生创业补贴？</text>
+        <view class="search-btn" catchtap="goToChat">AI 提问</view>
+      </view>
+      <!-- 语音快捷入口 -->
+      <view class="voice-quick-entry" bindtap="goToChatWithVoice">
+        <text class="voice-quick-icon">🎤</text>
+        <text class="voice-quick-text">语音提问</text>
+      </view>
+      <view class="hot-tags" wx:if="{{hotSearches.length > 0}}">
+        <text class="hot-label">热搜：</text>
+        <scroll-view scroll-x class="tag-scroll" enhanced show-scrollbar="{{false}}">
+          <view class="tag-list-inline">
+            <text class="hot-tag" wx:for="{{hotSearches}}" wx:key="index" data-keyword="{{item}}" bindtap="onHotSearch">{{item}}</text>
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 个性化推荐（基于用户兴趣标签） -->
+  <view class="section" wx:if="{{personalizedRecs.length > 0}}">
+    <view class="section-header">
+      <view class="section-title">
+        <text class="section-icon">✨</text>
+        <text class="section-title-text">为你推荐</text>
+      </view>
+      <text class="rec-reason">基于你的兴趣：{{userTopInterest}}</text>
+    </view>
+    <scroll-view scroll-x class="rec-scroll" enhanced show-scrollbar="{{false}}">
+      <view class="rec-list">
+        <view class="rec-card" wx:for="{{personalizedRecs}}" wx:key="id" bindtap="onRecTap" data-q="{{item.question}}">
+          <view class="rec-icon-wrap" style="background: {{item.bgColor}};">
+            <text class="rec-icon">{{item.icon}}</text>
+          </view>
+          <text class="rec-title">{{item.title}}</text>
+          <text class="rec-tag">{{item.tag}}</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 公告与动态 -->
+  <view class="section">
+    <view class="section-header">
+      <view class="section-title">
+        <text class="section-icon">📢</text>
+        <text class="section-title-text">校园动态公告</text>
+      </view>
+      <text class="section-more">查看全部 ›</text>
+    </view>
+    <view class="announcements">
+      <view class="announcement-item" wx:for="{{announcements}}" wx:key="id">
+        <text class="tag {{item.tagClass}}">{{item.tag}}</text>
+        <view class="announcement-content">
+          <text class="announcement-title">{{item.title}}</text>
+          <text class="announcement-desc">{{item.desc}}</text>
+        </view>
+        <text class="announcement-time">{{item.time}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 实时热议 -->
+  <view class="section">
+    <view class="section-header">
+      <view class="section-title">
+        <text class="section-icon">🔥</text>
+        <text class="section-title-text">实时热议 Top5</text>
+      </view>
+    </view>
+    <view class="hot-list">
+      <view class="hot-item" wx:for="{{hotTopics}}" wx:key="id">
+        <text class="hot-rank rank-{{index < 3 ? (index+1) : 'default'}}">{{index+1}}</text>
+        <text class="hot-title ellipsis">{{item.title}}</text>
+        <text class="hot-trend {{item.trend === 'up' ? 'trend-up' : (item.trend === 'down' ? 'trend-down' : 'trend-flat')}}">{{item.trend === 'up' ? '↑' : (item.trend === 'down' ? '↓' : '—')}}</text>
+      </view>
+    </view>
+    <view class="enter-community" bindtap="goToCommunity">
+      <text>进入热度专栏 ›</text>
+    </view>
+  </view>
+
+  <!-- 服务矩阵 -->
+  <view class="section">
+    <view class="section-header">
+      <view class="section-title">
+        <text class="section-icon">🧩</text>
+        <text class="section-title-text">智慧校园服务矩阵</text>
+      </view>
+    </view>
+    <view class="service-grid">
+      <view class="service-item" wx:for="{{services}}" wx:key="id">
+        <view class="service-icon-wrap" style="background: {{item.bgColor}};">
+          <text class="service-icon">{{item.icon}}</text>
+        </view>
+        <view class="service-info">
+          <text class="service-name">{{item.name}}</text>
+          <text class="service-desc">{{item.desc}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部信息 -->
+  <view class="footer">
+    <text class="footer-text">© 2026 浙大城市学院智校通</text>
+    <text class="footer-sub">基于 AI 多模态大模型及 GraphRAG 技术驱动</text>
+  </view>
+</view>

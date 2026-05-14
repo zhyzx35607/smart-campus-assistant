@@ -1,0 +1,70 @@
+<view class="page">
+  <!-- 帖子内容 -->
+  <view class="post-card">
+    <view class="post-header">
+      <image class="post-avatar" src="{{post.avatar}}" mode="aspectFill" />
+      <view class="post-author-info">
+        <text class="post-author">{{post.author}}</text>
+        <view class="post-meta">
+          <text class="post-time">{{post.time}}</text>
+          <text class="tag tag-blue" wx:if="{{post.authorTag}}">{{post.authorTag}}</text>
+        </view>
+      </view>
+    </view>
+    <text class="post-title">{{post.title}}</text>
+    <text class="post-content">{{post.content}}</text>
+    <view class="post-actions">
+      <view class="action-btn {{liked ? 'liked' : ''}}" bindtap="onLike">
+        <text>❤️</text>
+        <text class="action-num">{{post.likes}}</text>
+      </view>
+      <view class="action-btn">
+        <text>💬</text>
+        <text class="action-num">{{post.comments}}</text>
+      </view>
+      <view class="action-btn {{bookmarked ? 'bookmarked' : ''}}" bindtap="onBookmark">
+        <text>🔖</text>
+        <text class="action-num">{{bookmarked ? '已收藏' : '收藏'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 官方回应 -->
+  <view class="official-card" wx:if="{{post.officialResponse}}">
+    <view class="official-header">
+      <text class="official-icon">🛡️</text>
+      <text class="official-title">{{post.officialResponse.author}}</text>
+    </view>
+    <text class="official-content">{{post.officialResponse.content}}</text>
+  </view>
+
+  <!-- 评论区 -->
+  <view class="comment-section">
+    <text class="section-title">评论 ({{commentList.length}})</text>
+    <view class="comment-list">
+      <view class="comment-item" wx:for="{{commentList}}" wx:key="id">
+        <image class="comment-avatar" src="{{item.avatar}}" mode="aspectFill" />
+        <view class="comment-body">
+          <text class="comment-author">{{item.author}}</text>
+          <text class="comment-text">{{item.content}}</text>
+          <view class="comment-footer">
+            <text class="comment-time">{{item.time}}</text>
+            <view class="comment-action">
+              <text class="comment-like">👍 {{item.likes}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 评论输入 -->
+  <view class="comment-input-area safe-bottom">
+    <view class="comment-input-wrap">
+      <input class="comment-input" placeholder="写评论..." value="{{commentText}}" bindinput="onCommentInput" />
+      <view class="comment-send-btn" bindtap="onSendComment">
+        <text>发送</text>
+      </view>
+    </view>
+  </view>
+</view>

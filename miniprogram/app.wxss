@@ -1,0 +1,228 @@
+/* 全局样式 */
+page {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  background-color: #f8fafc;
+  color: #1e293b;
+  font-size: 28rpx;
+  line-height: 1.6;
+  box-sizing: border-box;
+}
+
+/* 全局 box-sizing */
+view, text, input, textarea, image, scroll-view {
+  box-sizing: border-box;
+}
+
+/* 通用容器 */
+.container {
+  padding: 24rpx 32rpx;
+  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
+}
+
+/* 通用卡片 */
+.card {
+  background: #ffffff;
+  border-radius: 32rpx;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+  border: 1rpx solid #f1f5f9;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+/* 通用标签 */
+.tag {
+  display: inline-block;
+  font-size: 20rpx;
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
+  font-weight: 500;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.tag-blue {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.tag-green {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.tag-orange {
+  background: #ffedd5;
+  color: #ea580c;
+}
+
+.tag-red {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.tag-purple {
+  background: #f3e8ff;
+  color: #9333ea;
+}
+
+/* 渐变背景 */
+.gradient-blue {
+  background: linear-gradient(135deg, #2563eb, #4f46e5);
+}
+
+/* 按钮样式 */
+.btn-primary {
+  background: linear-gradient(135deg, #2563eb, #4f46e5);
+  color: #ffffff;
+  border: none;
+  border-radius: 20rpx;
+  padding: 20rpx 40rpx;
+  font-weight: 700;
+  font-size: 28rpx;
+  text-align: center;
+  box-shadow: 0 8rpx 24rpx rgba(37, 99, 235, 0.3);
+}
+
+.btn-primary::after {
+  border: none;
+}
+
+.btn-outline {
+  background: #ffffff;
+  color: #475569;
+  border: 2rpx solid #e2e8f0;
+  border-radius: 20rpx;
+  padding: 20rpx 40rpx;
+  font-weight: 500;
+  font-size: 28rpx;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.btn-outline::after {
+  border: none;
+}
+
+/* 输入框 */
+.input-field {
+  width: 100%;
+  padding: 24rpx;
+  border: 2rpx solid #e2e8f0;
+  border-radius: 20rpx;
+  font-size: 28rpx;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+
+.textarea-field {
+  width: 100%;
+  padding: 24rpx;
+  border: 2rpx solid #e2e8f0;
+  border-radius: 20rpx;
+  font-size: 28rpx;
+  background: #ffffff;
+  box-sizing: border-box;
+  min-height: 240rpx;
+}
+
+/* Flex 布局辅助 */
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-1 {
+  flex: 1;
+  min-width: 0;
+}
+
+/* 文字省略 */
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ellipsis-2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
+}
+
+.ellipsis-3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
+}
+
+/* 分割线 */
+.divider {
+  height: 1rpx;
+  background: #f1f5f9;
+  margin: 24rpx 0;
+}
+
+/* 开关组件样式 */
+.switch-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 0;
+}
+
+/* 设置列表项 */
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32rpx 0;
+  border-bottom: 1rpx solid #f1f5f9;
+}
+
+.setting-item:last-child {
+  border-bottom: none;
+}
+
+/* 安全区域 */
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* ===== Picker 弹出层全局字体适配 ===== */
+/* 微信小程序原生 picker 弹窗字体默认偏小，强制放大 */
+picker-view-column {
+  font-size: 40rpx !important;
+  line-height: 1.6;
+}
+
+/* 兼容不同基础库版本的picker内部样式 */
+.wx-picker-item,
+.picker-item,
+picker-view-column text {
+  font-size: 38rpx !important;
+}

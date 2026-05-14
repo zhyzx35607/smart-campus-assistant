@@ -1,0 +1,193 @@
+<view class="page">
+  <!-- 历史记录侧边栏遮罩 -->
+  <view class="sidebar-mask {{showSidebar ? 'show' : ''}}" bindtap="toggleSidebar"></view>
+
+  <!-- 历史记录侧边栏 -->
+  <view class="sidebar {{showSidebar ? 'show' : ''}}">
+    <!-- 开启新会话按钮 -->
+    <view class="sidebar-header">
+      <view class="new-chat-btn" bindtap="startNewChat">
+        <text class="new-chat-icon">➕</text>
+        <text>开启新会话</text>
+      </view>
+    </view>
+
+    <!-- 历史记录列表 -->
+    <scroll-view class="history-list" scroll-y enhanced show-scrollbar="{{false}}">
+      <text class="history-date-label">今天</text>
+      <view class="history-item {{item.id === activeHistoryId ? 'history-item-active' : ''}}" wx:for="{{todayHistory}}" wx:key="id" bindtap="loadHistory" data-id="{{item.id}}">
+        <text class="history-title">{{item.title}}</text>
+        <text class="history-time">{{item.time}}</text>
+      </view>
+
+      <text class="history-date-label">昨天</text>
+      <view class="history-item" wx:for="{{yesterdayHistory}}" wx:key="id" bindtap="loadHistory" data-id="{{item.id}}">
+        <text class="history-title">{{item.title}}</text>
+        <text class="history-time">{{item.time}}</text>
+      </view>
+
+      <text class="history-date-label" wx:if="{{earlierHistory.length > 0}}">更早</text>
+      <view class="history-item" wx:for="{{earlierHistory}}" wx:key="id" bindtap="loadHistory" data-id="{{item.id}}">
+        <text class="history-title">{{item.title}}</text>
+        <text class="history-time">{{item.time}}</text>
+      </view>
+    </scroll-view>
+
+    <!-- 底部AI声明 -->
+    <view class="sidebar-footer">
+      <view class="ai-disclaimer">
+        <text class="disclaimer-icon">⚠️</text>
+        <text class="disclaimer-text">所有回答由 AI 生成，请以学校官方文件为准。</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 主内容区 -->
+  <view class="main-content">
+    <!-- 顶部栏：标题 + 历史记录按钮 -->
+    <view class="top-bar">
+      <view class="sidebar-toggle" bindtap="toggleSidebar">
+        <text class="toggle-icon">☰</text>
+      </view>
+      <text class="top-bar-title">AI 助手</text>
+      <view class="top-bar-placeholder"></view>
+    </view>
+
+    <!-- 消息列表 -->
+    <scroll-view class="message-list" scroll-y scroll-into-view="{{scrollToView}}" enhanced show-scrollbar="{{false}}">
+    <!-- AI 欢迎语 -->
+    <view class="message-row ai-row" id="msg-0">
+      <view class="avatar ai-avatar">🌐</view>
+      <view class="bubble ai-bubble">
+        <text class="bubble-text">您好！我是智校通 2026 AI 助手。很高兴能协助您！我已深度学习了学校最新的政策库、教务系统手册以及图书馆 RAG 学术资源。\n\n您可以问我关于选课、报修、考勤甚至学术开题的任何问题。</text>
+        <view class="quick-actions">
+          <view class="quick-btn quick-btn-active" data-q="如何修改选课计划？" bindtap="onQuickAsk">如何修改选课计划？</view>
+          <view class="quick-btn" data-q="宿舍空调不制冷怎么办？" bindtap="onQuickAsk">宿舍空调不制冷怎么办？</view>
+          <view class="quick-btn" data-q="2026校历下载" bindtap="onQuickAsk">2026校历下载</view>
+          <view class="quick-btn" data-q="怎么办理校园卡挂失？" bindtap="onQuickAsk">怎么办理校园卡挂失？</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 用户消息 -->
+    <view class="message-row user-row" wx:for="{{userMessages}}" wx:key="id" id="msg-{{item.id}}">
+      <view class="avatar user-avatar">👤</view>
+      <view class="bubble user-bubble">
+        <text class="bubble-text">{{item.content}}</text>
+      </view>
+    </view>
+
+    <!-- AI 回复 -->
+    <view class="message-row ai-row" wx:for="{{aiMessages}}" wx:key="id" id="msg-ai-{{item.id}}">
+      <view class="avatar ai-avatar">🌐</view>
+      <view class="bubble ai-bubble">
+        <text class="bubble-text">{{item.content}}</text>
+        <view class="reference-box" wx:if="{{item.reference}}">
+          <text class="ref-icon">ℹ️</text>
+          <text class="ref-text">{{item.reference}}</text>
+        </view>
+        <!-- 语音播放按钮 -->
+        <view class="voice-play-btn {{currentPlayingId === item.id ? 'playing' : ''}}" wx:if="{{item.content}}" bindtap="playVoiceResponse" data-id="{{item.id}}" data-content="{{item.content}}">
+          <text class="voice-play-icon">{{currentPlayingId === item.id ? '⏸️' : '🔊'}}</text>
+          <text class="voice-play-text">{{currentPlayingId === item.id ? '播放中...' : '朗读回复'}}</text>
+        </view>
+        <view class="feedback-row">
+          <view class="feedback-btn" data-id="{{item.id}}" data-type="helpful" bindtap="onFeedback">
+            <text>👍 有帮助</text>
+          </view>
+          <view class="feedback-btn" data-id="{{item.id}}" data-type="inaccurate" bindtap="onFeedback">
+            <text>👎 不准确</text>
+          </view>
+          <view class="feedback-divider"></view>
+          <view class="feedback-link" bindtap="goToCommunity">
+            <text>💬 去社区讨论</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部占位 -->
+    <view id="msg-bottom" style="height: 20rpx;"></view>
+  </scroll-view>
+
+  <!-- 输入区域 -->
+  <view class="input-area safe-bottom">
+    <!-- 文字输入模式 -->
+    <view class="input-wrap" wx:if="{{!isVoiceMode}}">
+      <textarea
+        class="chat-input"
+        placeholder="输入您的问题..."
+        value="{{inputText}}"
+        bindinput="onInput"
+        adjust-position="{{true}}"
+        auto-height
+        maxlength="500"
+        cursor-spacing="20"
+      />
+      <view class="input-actions">
+        <view class="input-tools">
+          <text class="tool-btn" bindtap="onAttach">📎</text>
+          <text class="tool-btn" bindtap="onImage">🖼️</text>
+          <text class="tool-btn {{isVoiceMode ? 'tool-active' : ''}}" bindtap="switchToVoice">🎤</text>
+        </view>
+        <view class="send-btn {{inputText ? '' : 'disabled'}}" bindtap="sendMessage">
+          <text class="send-text">发送</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 语音输入模式 -->
+    <view class="voice-input-wrap" wx:if="{{isVoiceMode}}">
+      <view class="voice-mode-header">
+        <text class="voice-mode-title">语音输入</text>
+        <view class="voice-mode-switches">
+          <text class="mode-switch-label">回答方式：</text>
+          <view class="mode-switch-group">
+            <text class="mode-switch-btn {{responseMode === 'text' ? 'active' : ''}}" data-mode="text" bindtap="switchResponseMode">文字</text>
+            <text class="mode-switch-btn {{responseMode === 'voice' ? 'active' : ''}}" data-mode="voice" bindtap="switchResponseMode">语音</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 录音按钮 -->
+      <view class="record-area">
+        <view
+          class="record-btn {{isRecording ? 'recording' : ''}}"
+          bindtouchstart="startRecord"
+          bindtouchend="stopRecord"
+          bindtouchcancel="cancelRecord"
+        >
+          <view class="record-btn-inner">
+            <text class="record-icon">{{isRecording ? '⏹️' : '🎤'}}</text>
+            <text class="record-text">{{isRecording ? (recordTime + 's') : '按住说话'}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 录音提示 -->
+      <view class="record-hint" wx:if="{{isRecording}}">
+        <view class="record-wave">
+          <view class="wave-bar" wx:for="{{waveBars}}" wx:key="index" style="height: {{item}}rpx;"></view>
+        </view>
+        <text class="record-hint-text">{{recordHint}}</text>
+      </view>
+
+      <!-- 识别结果预览 -->
+      <view class="voice-result-preview" wx:if="{{voiceRecognizedText && !isRecording}}">
+        <text class="voice-result-label">识别结果：</text>
+        <text class="voice-result-text">{{voiceRecognizedText}}</text>
+        <view class="voice-result-actions">
+          <text class="voice-result-send" bindtap="sendVoiceMessage">发送</text>
+          <text class="voice-result-cancel" bindtap="clearVoiceResult">重新录制</text>
+        </view>
+      </view>
+
+      <view class="voice-input-bottom">
+        <text class="switch-to-text" bindtap="switchToText">⌨️ 切换到文字输入</text>
+      </view>
+    </view>
+
+    <text class="privacy-hint">提示：输入内容将加密传输并遵守学校隐私保护协议</text>
+  </view>
+  </view>
+</view>

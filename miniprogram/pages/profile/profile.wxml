@@ -1,0 +1,153 @@
+<view class="page">
+  <!-- 用户信息卡片 -->
+  <view class="user-card">
+    <view class="user-info">
+      <image class="user-avatar" src="{{userInfo.avatar}}" mode="aspectFill" />
+      <view class="user-detail">
+        <text class="user-name">{{userInfo.name}}</text>
+        <text class="user-id">学号：{{userInfo.studentId}}</text>
+        <text class="user-college">{{userInfo.college}} · {{userInfo.grade}}</text>
+      </view>
+      <view class="edit-btn" bindtap="goToEditProfile">
+        <text>✏️ 编辑资料</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 统计卡片 -->
+  <view class="stats-row">
+    <view class="stat-card">
+      <text class="stat-icon">💬</text>
+      <text class="stat-num">{{qaHistory.length + 125}}</text>
+      <text class="stat-label">提问次数</text>
+    </view>
+    <view class="stat-card">
+      <text class="stat-icon">👍</text>
+      <text class="stat-num">96</text>
+      <text class="stat-label">点赞贡献</text>
+    </view>
+    <view class="stat-card">
+      <text class="stat-icon">📝</text>
+      <text class="stat-num">{{myPosts.length}}</text>
+      <text class="stat-label">社区帖子</text>
+    </view>
+  </view>
+
+  <!-- 用户兴趣画像 -->
+  <view class="interest-section" wx:if="{{userTags.length > 0}}">
+    <view class="section-header">
+      <view class="section-title-inline">
+        <text class="section-icon-text">🏷️</text>
+        <text class="section-title-label">我的兴趣画像</text>
+      </view>
+      <text class="tag-count">已记录 {{totalTagCount}} 次提问</text>
+    </view>
+    <view class="tags-container">
+      <view class="interest-tag {{index === 0 ? 'top-tag' : ''}}" wx:for="{{userTags}}" wx:key="name">
+        <text class="tag-name">{{item.name}}</text>
+        <text class="tag-count-badge">{{item.count}}次</text>
+      </view>
+    </view>
+    <text class="interest-hint">💡 系统根据您的问答历史自动分析兴趣偏好，用于个性化推荐</text>
+  </view>
+
+  <!-- 无兴趣数据提示 -->
+  <view class="interest-section" wx:if="{{userTags.length === 0}}">
+    <view class="empty-interest">
+      <text class="empty-icon">🔍</text>
+      <text class="empty-text">暂无兴趣数据</text>
+      <text class="empty-sub">去AI助手多问几个问题吧，系统会自动记录你的兴趣偏好~</text>
+      <view class="go-chat-btn" bindtap="goToChat">
+        <text>去提问</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 标签页 -->
+  <view class="tab-section">
+    <view class="tab-header">
+      <text class="tab-btn {{activeTab === 'qa' ? 'active' : ''}}" data-tab="qa" bindtap="onTabChange">问答历史</text>
+      <text class="tab-btn {{activeTab === 'posts' ? 'active' : ''}}" data-tab="posts" bindtap="onTabChange">我的帖子</text>
+      <text class="tab-btn {{activeTab === 'feedback' ? 'active' : ''}}" data-tab="feedback" bindtap="onTabChange">反馈记录</text>
+    </view>
+
+    <!-- 问答历史 -->
+    <view class="tab-content" wx:if="{{activeTab === 'qa'}}">
+      <view class="qa-item" wx:for="{{qaHistory}}" wx:key="id">
+        <view class="qa-top">
+          <view class="qa-left">
+            <text class="qa-date">{{item.date}}</text>
+            <text class="qa-question">{{item.question}}</text>
+            <text class="qa-answer ellipsis">{{item.answer}}</text>
+          </view>
+          <text class="tag {{item.status === '已答' ? 'tag-green' : 'tag-orange'}}">{{item.status}}</text>
+        </view>
+        <view class="qa-actions" wx:if="{{item.hasFeedback}}">
+          <text class="qa-action" data-id="{{item.id}}" data-type="helpful" bindtap="onQaFeedback">👍 有帮助</text>
+          <text class="qa-action" data-id="{{item.id}}" data-type="bad" bindtap="onQaFeedback">👎 吐槽</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 我的帖子 -->
+    <view class="tab-content" wx:if="{{activeTab === 'posts'}}">
+      <view class="my-post-item" wx:for="{{myPosts}}" wx:key="id">
+        <view class="my-post-top">
+          <text class="my-post-title">{{item.title}}</text>
+          <text class="my-post-date">{{item.date}}</text>
+        </view>
+        <text class="my-post-desc">{{item.content}}</text>
+        <view class="my-post-stats">
+          <text class="stat">❤️ {{item.likes}} 点赞</text>
+          <text class="stat">💬 {{item.comments}} 评论</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 反馈记录 -->
+    <view class="tab-content" wx:if="{{activeTab === 'feedback'}}">
+      <view class="feedback-item" wx:for="{{feedbackRecords}}" wx:key="id">
+        <view class="feedback-top">
+          <view class="feedback-left">
+            <text class="feedback-title">{{item.title}}</text>
+            <text class="feedback-desc">{{item.desc}}</text>
+          </view>
+          <text class="tag {{item.status === '已处理' ? 'tag-green' : 'tag-orange'}}">{{item.status}}</text>
+        </view>
+        <text class="feedback-result" wx:if="{{item.result}}">{{item.result}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 设置列表 -->
+  <view class="settings-card">
+    <view class="setting-item" bindtap="goToNotificationSettings">
+      <view class="setting-left">
+        <text class="setting-icon">🔔</text>
+        <text class="setting-label">消息通知设置</text>
+      </view>
+      <text class="setting-arrow">›</text>
+    </view>
+    <view class="setting-item" bindtap="goToSecurityPrivacy">
+      <view class="setting-left">
+        <text class="setting-icon">🔒</text>
+        <text class="setting-label">安全与隐私</text>
+      </view>
+      <text class="setting-arrow">›</text>
+    </view>
+    <view class="setting-item">
+      <view class="setting-left">
+        <text class="setting-icon">🌙</text>
+        <text class="setting-label">深色模式</text>
+      </view>
+      <switch checked="{{darkMode}}" bindchange="onDarkModeChange" color="#2563eb" />
+    </view>
+    <view class="setting-item logout" bindtap="onLogout">
+      <view class="setting-left">
+        <text class="setting-icon">🚪</text>
+        <text class="setting-label">退出登录</text>
+      </view>
+      <text class="setting-arrow">›</text>
+    </view>
+  </view>
+</view>
