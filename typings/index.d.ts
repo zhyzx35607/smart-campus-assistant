@@ -10,6 +10,11 @@ interface IAppOption {
       avatar: string
     }
     isLoggedIn: boolean
+    userTags?: Array<{
+      name: string
+      count: number
+      lastAsked: string
+    }>
   }
   userInfoReadyCallback?: WechatMiniprogram.GetUserInfoSuccessCallback,
 }

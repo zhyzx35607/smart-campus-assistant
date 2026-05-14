@@ -28,3 +28,6 @@ npm-debug.log*
 # Temporary files
 *.tmp
 *.temp
+
+# Project docs (not part of miniprogram)
+校务问答机器人网站/
